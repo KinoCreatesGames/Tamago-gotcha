@@ -35,8 +35,13 @@ class Level extends dn.Process {
 
   var invalidated = true;
 
-  public function new(level) {
+  public var data:LDTkProj_Level;
+
+  // Groups
+
+  public function new(level:LDTkProj_Level) {
     super(Game.ME);
+    this.data = level;
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
   }
 
@@ -51,6 +56,13 @@ class Level extends dn.Process {
   /** Ask for a level render that will only happen at the end of the current frame. **/
   public inline function invalidate() {
     invalidated = true;
+  }
+
+  public function hasAnyCollision(cx:Int, cy:Int) {
+    if ([2, 4].contains(data.l_LevelIGrid.getInt(cx, cy))) {
+      return true;
+    }
+    return false;
   }
 
   function render() {
