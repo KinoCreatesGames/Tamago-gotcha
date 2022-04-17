@@ -1,5 +1,9 @@
 package en;
 
+import en.collectibles.BucketKnightEgg;
+import en.collectibles.Ropelli802Egg;
+import en.collectibles.SleetherEgg;
+import en.collectibles.OinksterEgg;
 import h3d.Vector;
 import dn.legacy.Controller.ControllerAccess;
 
@@ -85,7 +89,7 @@ class Player extends BaseEnt {
     super.update();
     updateInvincibility();
     handleMovement();
-    handleCollision();
+    updateCollisions();
   }
 
   /**
@@ -110,7 +114,8 @@ class Player extends BaseEnt {
   public function handleMovement() {
     var left = ct.leftDown();
     var right = ct.rightDown();
-    var up = ct.upPressed();
+    var up = ct.upDown();
+    var down = ct.downDown();
 
     if (left || right || up) {
       if (left) {
@@ -120,7 +125,9 @@ class Player extends BaseEnt {
       }
 
       if (up) {
-        dy = -JUMP_FORCE;
+        dy = -MOVE_SPD;
+      } else if (down) {
+        dy = MOVE_SPD;
       }
     }
   }
@@ -142,6 +149,27 @@ class Player extends BaseEnt {
     var enemy = level.getEnemyCollision(cx, cy);
     if (enemy != null) {
       takeDamage();
+    }
+  }
+
+  public function collideWithCollectible() {
+    collideWithEgg();
+  }
+
+  public function collideWithEgg() {
+    var egg = level.getEgg(cx, cy);
+    if (egg != null) {
+      var eggType = Type.getClass(egg);
+      switch (eggType) {
+        case OinksterEgg:
+        // Handle Oinkster Egg
+        case BucketKnightEgg:
+        // Handle BucketKnight Egg
+        case Ropelli802Egg:
+        // Handle Ropelli802 Egg
+        case SleetherEgg:
+          // SleetherEgg
+      }
     }
   }
 
