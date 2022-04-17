@@ -153,7 +153,7 @@ class Level extends dn.Process {
    * @param cy 
    */
   public function getDetectionLevel(cx:Int, cy:Int) {
-    var detectionLevels = eggs.map((egg) -> {
+    var detectionLevels = eggs.filter((lEgg) -> lEgg.isAlive()).map((egg) -> {
       {
         detectionLevel: getEggDetectionLevel(cx, cy, egg),
         dir: new Vector(cx - egg.cx, cy - egg.cy).normalized(),
