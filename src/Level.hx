@@ -35,7 +35,7 @@ class Level extends dn.Process {
 
   var invalidated = true;
 
-  public function new() {
+  public function new(level) {
     super(Game.ME);
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
   }

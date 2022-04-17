@@ -343,6 +343,10 @@ class Entity {
     updateActions();
   }
 
+  public function onPreStepX() {}
+
+  public function onPreStepY() {}
+
   public function postUpdate() {
     spr.x = (cx + xr) * Const.GRID;
     spr.y = (cy + yr) * Const.GRID;
@@ -383,6 +387,7 @@ class Entity {
       xr += step;
 
       // [ add X collisions checks here ]
+      onPreStepX();
 
       while (xr > 1) {
         xr--;
@@ -406,6 +411,7 @@ class Entity {
       yr += step;
 
       // [ add Y collisions checks here ]
+      onPreStepY();
 
       while (yr > 1) {
         yr--;
