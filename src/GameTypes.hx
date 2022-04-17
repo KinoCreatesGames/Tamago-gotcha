@@ -54,3 +54,39 @@ enum abstract CollectibleTypes(String) from String to String {
   var JLife = 'Life';
   var JetPack = 'JetPack';
 }
+
+/**
+ * Detection level based on how close you 
+ * are to the target egg.
+ */
+enum abstract DetectionLevel(Int) from Int to Int {
+  /**
+   * 90 - 100 - 2 tiles away
+   */
+  var SuperHot = 6;
+
+  /**
+   * 70-90 - 5 tiles away
+   */
+  var Hot = 5;
+
+  /**
+   * 50 - 70 - 10 tiles away
+   */
+  var Warmer = 4;
+
+  /**
+   * 40 - 50 - 15 tiles away
+   */
+  var Warm = 3;
+
+  /**
+   * 20 - 40 - 20 tiles away
+   */
+  var Cold = 2;
+
+  /**
+   * 0 - 20 - 25 tiles away
+   */
+  var IceCold = 1;
+}

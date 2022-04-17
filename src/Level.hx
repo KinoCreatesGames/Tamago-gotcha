@@ -1,3 +1,6 @@
+import en.Enemy;
+import h3d.Vector;
+import GameTypes.DetectionLevel;
 import en.collectibles.Egg;
 import en.collectibles.OinksterEgg;
 import en.collectibles.Ropelli802Egg;
@@ -48,6 +51,7 @@ class Level extends dn.Process {
   // Groups & Player
   public var player:Player;
   public var collectibles:Group<Collectible>;
+  public var enemies:Group<Enemy>;
   public var eggs:Group<Egg>;
 
   public function new(level:LDTkProj_Level) {
@@ -77,6 +81,7 @@ class Level extends dn.Process {
 
   public function createGroups() {
     collectibles = new Group<Collectible>();
+    enemies = new Group<Enemy>();
     eggs = new Group<Egg>();
   }
 
@@ -125,6 +130,58 @@ class Level extends dn.Process {
       }
     }
     return null;
+  }
+
+  public function getEnemyCollision(cx:Int, cy:Int) {
+    for (enemy in enemies) {
+      if (enemy.cx == cx && enemy.cy == cy) {
+        return enemy;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the detection level and the direction
+   * to detect in within the game.
+   * @param cx 
+   * @param cy 
+   */
+  public function getDetectionLevel(cx:Int, cy:Int) {
+    var detectionLevels = eggs.map((egg) -> {
+      {
+        detectionLevel: getEggDetectionLevel(cx, cy, egg),
+        dir: new Vector(cx - egg.cx, cy - egg.cy).normalized(),
+        ang: M.angTo(cx, cy, egg.cx, egg.cy)
+      }
+    });
+    detectionLevels.sort((detectionOne, detectionTwo) -> {
+      return detectionOne.detectionLevel - detectionTwo.detectionLevel;
+    });
+    return detectionLevels.first();
+  }
+
+  public function getEggDetectionLevel(cx:Int, cy:Int, egg:Egg) {
+    var dist = M.dist(cx, cy, egg.cx, egg.cy);
+    return switch (dist) {
+      case d if (d <= 2):
+        DetectionLevel.SuperHot;
+
+      case d if (d <= 5):
+        DetectionLevel.Hot;
+
+      case d if (d <= 10):
+        DetectionLevel.Warmer;
+      case d if (d <= 15):
+        DetectionLevel.Warm;
+      case d if (d <= 20):
+        DetectionLevel.Cold;
+      case d if (d <= 25):
+        DetectionLevel.IceCold;
+
+      case _:
+        DetectionLevel.IceCold;
+    }
   }
 
   function render() {

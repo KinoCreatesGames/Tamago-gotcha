@@ -36,10 +36,9 @@ class Game extends dn.Process {
     scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
     camera = new Camera();
-    level = new Level();
-    fx = new Fx();
     hud = new ui.Hud();
     hud.hide();
+    startInitialGame();
 
     Process.resizeAll();
     trace(Lang.t._("Game is ready."));
@@ -53,7 +52,7 @@ class Game extends dn.Process {
     // Play Game Loop Music
     // bgm = hxd.Res.music.juhani_stage.play(true, 0.5);
     // level = new Level(proj.all_levels.Level_0);
-    level = new Level();
+    level = new Level(Assets.projData.all_levels.Level_0);
     hud.show();
     fx = new Fx();
   }
@@ -63,6 +62,8 @@ class Game extends dn.Process {
       hud.invalidate();
     }
   }
+
+  public function completeLevel() {}
 
   /** CDB file changed on disk**/
   public function onCdbReload() {}

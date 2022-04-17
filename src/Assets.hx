@@ -21,6 +21,7 @@ class Assets {
   public static var pauseIn:Sound;
   public static var pauseOut:Sound;
 
+  public static var projData:LDTkProj;
   static var initDone = false;
 
   public static function init() {
@@ -43,6 +44,8 @@ class Assets {
     damageSnd = hxd.Res.sound.hit_sfx;
     pauseIn = hxd.Res.sound.pause_in;
     pauseOut = hxd.Res.sound.pause_out;
+
+    projData = new ldtkData.LDTkProj();
 
     // // Deep night project
     // projData = new ldtkData.LDTkProj();

@@ -80,4 +80,87 @@ class Player extends BaseEnt {
       dy = 0;
     }
   }
+
+  override function update() {
+    super.update();
+    updateInvincibility();
+    handleMovement();
+    handleCollision();
+  }
+
+  /**
+   * Updates the invincibility of the sprite
+   * using the blinking capability.
+   */
+  public function updateInvincibility() {
+    if (isInvincible) {
+      // spr.alpha = 1;
+      if (!cd.has('invincible')) {
+        cd.setF('invincible', 5, () -> {
+          spr.alpha = 0;
+        });
+      } else {
+        spr.alpha = 1;
+      }
+    } else {
+      spr.alpha = 1;
+    }
+  }
+
+  public function handleMovement() {
+    var left = ct.leftDown();
+    var right = ct.rightDown();
+    var up = ct.upPressed();
+
+    if (left || right || up) {
+      if (left) {
+        dx = -MOVE_SPD;
+      } else if (right) {
+        dx = MOVE_SPD;
+      }
+
+      if (up) {
+        dy = -JUMP_FORCE;
+      }
+    }
+  }
+
+  public function updateCollisions() {
+    if (level != null) {
+      if (this.isAlive()) {
+        collideWithCollectible();
+        collideWithEnemy();
+      }
+      collideWithExit();
+    }
+  }
+
+  /**
+   * Handle enemy collisions within the game.
+   */
+  public function collideWithEnemy() {
+    var enemy = level.getEnemyCollision(cx, cy);
+    if (enemy != null) {
+      takeDamage();
+    }
+  }
+
+  /**
+   * Complete level the second you get to the exit.
+   */
+  public function collideWithExit() {
+    game.completeLevel();
+  }
+
+  override function takeDamage(value:Int = 1) {
+    // Shake camera when the player takes damage.
+    if (!isInvincible) {
+      Game.ME.camera.shakeS(0.5, 0.5);
+      super.takeDamage(value);
+      cd.setS('invincibleTime', INVINCIBLE_TIME);
+      this.knockback();
+      // Play Damage Sound
+      Assets.damageSnd.play();
+    }
+  }
 }
