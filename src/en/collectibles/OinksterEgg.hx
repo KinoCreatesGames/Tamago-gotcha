@@ -1,6 +1,6 @@
 package en.collectibles;
 
-class OinksterEgg extends Collectible {
+class OinksterEgg extends Egg {
   public function new(oinkEgg:Entity_Oinkster_Egg) {
     super(oinkEgg.cx, oinkEgg.cy);
   }
