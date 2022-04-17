@@ -1,3 +1,4 @@
+import en.collectibles.Egg;
 import en.collectibles.OinksterEgg;
 import en.collectibles.Ropelli802Egg;
 import en.collectibles.SleetherEgg;
@@ -47,6 +48,7 @@ class Level extends dn.Process {
   // Groups & Player
   public var player:Player;
   public var collectibles:Group<Collectible>;
+  public var eggs:Group<Egg>;
 
   public function new(level:LDTkProj_Level) {
     super(Game.ME);
@@ -75,6 +77,7 @@ class Level extends dn.Process {
 
   public function createGroups() {
     collectibles = new Group<Collectible>();
+    eggs = new Group<Egg>();
   }
 
   public function createEntities() {
@@ -83,19 +86,19 @@ class Level extends dn.Process {
     }
 
     for (bkEgg in data.l_Entities.all_BucketKnight_Egg) {
-      collectibles.add(new BucketKnightEgg(bkEgg));
+      eggs.add(new BucketKnightEgg(bkEgg));
     }
 
     for (sEgg in data.l_Entities.all_Sleether_Egg) {
-      collectibles.add(new SleetherEgg(sEgg));
+      eggs.add(new SleetherEgg(sEgg));
     }
 
     for (rpEgg in data.l_Entities.all_Ropelli802_Egg) {
-      collectibles.add(new Ropelli802Egg(rpEgg));
+      eggs.add(new Ropelli802Egg(rpEgg));
     }
 
     for (oinkEgg in data.l_Entities.all_Oinkster_Egg) {
-      collectibles.add(new OinksterEgg(oinkEgg));
+      eggs.add(new OinksterEgg(oinkEgg));
     }
   }
 
@@ -106,7 +109,21 @@ class Level extends dn.Process {
     return false;
   }
 
+  public function getEgg(cx:Int, cy:Int) {
+    for (egg in eggs) {
+      if (cx == egg.cx && egg.cy == cy) {
+        return egg;
+      }
+    }
+    return null;
+  }
+
   public function getCollectible(cx:Int, cy:Int) {
+    for (collectible in collectibles) {
+      if (cx == collectible.cx && collectible.cy == cy) {
+        return collectible;
+      }
+    }
     return null;
   }
 
