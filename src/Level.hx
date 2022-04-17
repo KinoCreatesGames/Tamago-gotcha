@@ -1,3 +1,5 @@
+import scn.GameOver;
+import scn.Pause;
 import en.Enemy;
 import h3d.Vector;
 import GameTypes.DetectionLevel;
@@ -45,6 +47,9 @@ class Level extends dn.Process {
     return cHei * Const.GRID;
 
   var invalidated = true;
+
+  public var scnPause:Pause;
+  public var scnGameOver:GameOver;
 
   public var data:LDTkProj_Level;
 
@@ -116,7 +121,7 @@ class Level extends dn.Process {
 
   public function getEgg(cx:Int, cy:Int) {
     for (egg in eggs) {
-      if (cx == egg.cx && egg.cy == cy) {
+      if (cx == egg.cx && egg.cy == cy && egg.isAlive()) {
         return egg;
       }
     }
@@ -125,7 +130,7 @@ class Level extends dn.Process {
 
   public function getCollectible(cx:Int, cy:Int) {
     for (collectible in collectibles) {
-      if (cx == collectible.cx && collectible.cy == cy) {
+      if (cx == collectible.cx && collectible.cy == cy && collectible.isAlive()) {
         return collectible;
       }
     }
@@ -134,7 +139,7 @@ class Level extends dn.Process {
 
   public function getEnemyCollision(cx:Int, cy:Int) {
     for (enemy in enemies) {
-      if (enemy.cx == cx && enemy.cy == cy) {
+      if (enemy.cx == cx && enemy.cy == cy && enemy.isAlive()) {
         return enemy;
       }
     }
@@ -181,6 +186,30 @@ class Level extends dn.Process {
 
       case _:
         DetectionLevel.IceCold;
+    }
+  }
+
+  override function update() {
+    super.update();
+    handlePause();
+    handleGameOver();
+  }
+
+  /**
+   * Handles pausing the game
+   */
+  public function handlePause() {
+    if (game.ca.isKeyboardPressed(K.ESCAPE)) {
+      Assets.pauseIn.play();
+      this.pause();
+      scnPause = new Pause();
+    }
+  }
+
+  public function handleGameOver() {
+    if (player.isDead()) {
+      this.pause();
+      new GameOver();
     }
   }
 

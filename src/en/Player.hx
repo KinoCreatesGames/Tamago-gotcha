@@ -18,6 +18,10 @@ class Player extends BaseEnt {
 
   public var isInvincible(get, null):Bool;
 
+  public var detectionLevel:GameTypes.DetectionLevel;
+  public var detectionDir:Vector;
+  public var detectionAngle:Float;
+
   public inline function get_isInvincible() {
     return cd.has('invincibleTime');
   }
@@ -90,6 +94,7 @@ class Player extends BaseEnt {
     updateInvincibility();
     handleMovement();
     updateCollisions();
+    updateDetection();
   }
 
   /**
@@ -170,7 +175,19 @@ class Player extends BaseEnt {
         case SleetherEgg:
           // SleetherEgg
       }
+      egg.destroy();
     }
+  }
+
+  /**
+   * Updates the detection area
+   * for the egg over time.
+   */
+  public function updateDetection() {
+    var detection = level.getDetectionLevel(cx, cy);
+    detectionLevel = detection.detectionLevel;
+    detectionDir = detection.dir;
+    detectionAngle = detection.ang;
   }
 
   /**
