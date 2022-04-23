@@ -10,7 +10,7 @@ class Assets {
   public static var tiles:SpriteLib;
   public static var gameTiles:SpriteLib;
 
-  // public static var gameTilesDict = Aseprite.getDict(hxd.Res.img.TilesDriller);
+  public static var gameTilesDict = Aseprite.getDict(hxd.Res.img.tiles);
   // Sound Collection
   public static var collectSnd:Sound;
   public static var switchOnSnd:Sound;
@@ -37,8 +37,8 @@ class Assets {
 
     // Tiles Section
     // uiEl = Aseprite.convertToSLib(Const.FPS, hxd.Res.img.UIFX.toAseprite());
-    // lgTiles = Aseprite.convertToSLib(Const.FPS,
-    //   hxd.Res.img.LargeTiles.toAseprite());
+    gameTiles = Aseprite.convertToSLib(Const.FPS,
+      hxd.Res.img.tiles.toAseprite());
     // Sounds Section
     collectSnd = hxd.Res.sound.collect_collectible;
     damageSnd = hxd.Res.sound.hit_sfx;
