@@ -11,9 +11,11 @@ class Egg extends BaseEgg {
   override function setupGraphic() {
     var g = this.spr.createGraphics();
     var size = Const.GRID;
-    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.BlueEgg);
+    var tile = Assets.gameTiles.getTile(Assets.gameTilesDict.Egg);
     g.beginTileFill(tile);
     g.drawRect(0, 0, size, size);
     g.endFill();
+    g.y -= 32;
+    g.x -= 16;
   }
 }

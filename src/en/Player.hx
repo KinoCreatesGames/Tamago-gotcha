@@ -4,6 +4,8 @@ import en.collectibles.BucketKnightEgg;
 import en.collectibles.Ropelli802Egg;
 import en.collectibles.SleetherEgg;
 import en.collectibles.OinksterEgg;
+import en.collectibles.Egg;
+import en.collectibles.BlueEgg;
 import h3d.Vector;
 import dn.legacy.Controller.ControllerAccess;
 
@@ -133,7 +135,7 @@ class Player extends BaseEnt {
     var up = ct.upDown();
     var down = ct.downDown();
 
-    if (left || right || up) {
+    if (left || right || up || down) {
       if (left) {
         dx = -MOVE_SPD;
       } else if (right) {
@@ -184,9 +186,21 @@ class Player extends BaseEnt {
         case Ropelli802Egg:
         // Handle Ropelli802 Egg
         case SleetherEgg:
-          // SleetherEgg
+        // SleetherEgg
+        case en.collectibles.Egg:
+          if (xr > .5 && xr < .7) {
+            trace(xr);
+            Assets.collectSnd.play();
+            egg.destroy();
+          }
+        case en.collectibles.BlueEgg:
+          if (xr > .5 && xr < .7) {
+            trace(xr);
+            Assets.collectSnd.play();
+            egg.destroy();
+          }
+        case _:
       }
-      egg.destroy();
     }
   }
 
@@ -196,9 +210,11 @@ class Player extends BaseEnt {
    */
   public function updateDetection() {
     var detection = level.getDetectionLevel(cx, cy);
-    detectionLevel = detection.detectionLevel;
-    detectionDir = detection.dir;
-    detectionAngle = detection.ang;
+    if (detection != null) {
+      detectionLevel = detection.detectionLevel;
+      detectionDir = detection.dir;
+      detectionAngle = detection.ang;
+    }
   }
 
   /**

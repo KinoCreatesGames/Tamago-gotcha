@@ -12,5 +12,7 @@ class BlueEgg extends BaseEgg {
     g.beginTileFill(tile);
     g.drawRect(0, 0, size, size);
     g.endFill();
+    g.y -= 32;
+    g.x -= 16;
   }
 }

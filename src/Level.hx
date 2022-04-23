@@ -1,3 +1,4 @@
+import en.collectibles.BaseEgg;
 import en.collectibles.BlueEgg;
 import scn.GameOver;
 import scn.Pause;
@@ -88,12 +89,13 @@ class Level extends dn.Process {
   public function createGroups() {
     collectibles = new Group<Collectible>();
     enemies = new Group<Enemy>();
-    eggs = new Group<Egg>();
+    eggs = new Group<BaseEgg>();
   }
 
   public function createEntities() {
     for (pl in data.l_Entities.all_Player) {
       player = new Player(pl.cx, pl.cy);
+      game.camera.trackEntity(player, true);
     }
 
     for (egg in data.l_Entities.all_Egg) {
@@ -174,7 +176,7 @@ class Level extends dn.Process {
     return detectionLevels.first();
   }
 
-  public function getEggDetectionLevel(cx:Int, cy:Int, egg:Egg) {
+  public function getEggDetectionLevel(cx:Int, cy:Int, egg:BaseEgg) {
     var dist = M.dist(cx, cy, egg.cx, egg.cy);
     return switch (dist) {
       case d if (d <= 2):
@@ -225,17 +227,14 @@ class Level extends dn.Process {
 
   function render() {
     // Placeholder level render
-    root.removeChildren();
-    for (cx in 0...cWid)
-      for (cy in 0...cHei) {
-        var g = new h2d.Graphics(root);
-        if (cx == 0
-          || cy == 0
-          || cx == cWid - 1
-          || cy == cHei - 1) g.beginFill(0xffcc00); else
-          g.beginFill(Color.randomColor(rnd(0, 1), 0.5, 0.4));
-        g.drawRect(cx * Const.GRID, cy * Const.GRID, Const.GRID, Const.GRID);
-      }
+
+    // Rendering Time
+    // World
+    var tlG = data.l_AutoLayerLevel.render();
+    // Decorations
+    data.l_Decoration.render(tlG);
+    root.addChild(tlG);
+    // root.removeChildren();
   }
 
   override function postUpdate() {
