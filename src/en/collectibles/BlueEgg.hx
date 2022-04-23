@@ -1,11 +1,8 @@
 package en.collectibles;
 
-/**
- * Base Entity of all eggs within the game.
- */
-class Egg extends BaseEgg {
-  public function new(e_Egg:Entity_Egg) {
-    super(e_Egg.cx, e_Egg.cy);
+class BlueEgg extends BaseEgg {
+  public function new(b_Egg:Entity_BlueEgg) {
+    super(b_Egg.cx, b_Egg.cy);
   }
 
   override function setupGraphic() {

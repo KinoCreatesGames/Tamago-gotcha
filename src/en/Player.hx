@@ -22,6 +22,8 @@ class Player extends BaseEnt {
   public var detectionDir:Vector;
   public var detectionAngle:Float;
 
+  public var eggIndicator:h2d.Graphics;
+
   public inline function get_isInvincible() {
     return cd.has('invincibleTime');
   }
@@ -52,6 +54,15 @@ class Player extends BaseEnt {
     g.endFill();
     g.y -= 8;
     g.x -= 8;
+    setupIndicator();
+  }
+
+  public function setupIndicator() {
+    eggIndicator = spr.createGraphics();
+    var tile = hxd.Res.img.Egg_indicator.toTile();
+    eggIndicator.beginTileFill(tile);
+    eggIndicator.drawRect(0, 0, Const.GRID, Const.GRID);
+    eggIndicator.endFill();
   }
 
   override function onPreStepX() {

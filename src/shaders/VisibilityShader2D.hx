@@ -1,5 +1,7 @@
 package shaders;
 
+import hxsl.Types.Sampler2D;
+
 /**
  * Works by adjusting the visible alpha levels
  * of the sprite using the distance from the current position
@@ -23,7 +25,7 @@ class VisibilityShader2D extends hxsl.Shader {
 
     function fragment() {
       var texColor = tex.get(input.uv);
-      if (texColor < visiblePerc) {
+      if (texColor.r < visiblePerc) {
         pixelColor.a = 0;
       } else {
         pixelColor = pixelColor;

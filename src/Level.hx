@@ -1,3 +1,4 @@
+import en.collectibles.BlueEgg;
 import scn.GameOver;
 import scn.Pause;
 import en.Enemy;
@@ -57,7 +58,7 @@ class Level extends dn.Process {
   public var player:Player;
   public var collectibles:Group<Collectible>;
   public var enemies:Group<Enemy>;
-  public var eggs:Group<Egg>;
+  public var eggs:Group<BaseEgg>;
 
   public function new(level:LDTkProj_Level) {
     super(Game.ME);
@@ -95,6 +96,13 @@ class Level extends dn.Process {
       player = new Player(pl.cx, pl.cy);
     }
 
+    for (egg in data.l_Entities.all_Egg) {
+      eggs.add(new Egg(egg));
+    }
+
+    for (bEgg in data.l_Entities.all_BlueEgg) {
+      eggs.add(new BlueEgg(bEgg));
+    }
     for (bkEgg in data.l_Entities.all_BucketKnight_Egg) {
       eggs.add(new BucketKnightEgg(bkEgg));
     }
@@ -191,8 +199,10 @@ class Level extends dn.Process {
 
   override function update() {
     super.update();
-    handlePause();
-    handleGameOver();
+    if (player != null) {
+      handlePause();
+      handleGameOver();
+    }
   }
 
   /**

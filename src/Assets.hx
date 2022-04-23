@@ -1,3 +1,4 @@
+import dn.heaps.assets.Aseprite;
 import hxd.res.Sound;
 import dn.heaps.slib.*;
 
