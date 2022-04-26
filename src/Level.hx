@@ -123,7 +123,7 @@ class Level extends dn.Process {
   }
 
   public function hasAnyCollision(cx:Int, cy:Int) {
-    if ([2, 4].contains(data.l_LevelIGrid.getInt(cx, cy))) {
+    if ([2, 4].contains(data.l_CollisionLayer.getInt(cx, cy))) {
       return true;
     }
     return false;
