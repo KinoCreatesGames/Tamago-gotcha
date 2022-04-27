@@ -14,5 +14,8 @@ class BlueEgg extends BaseEgg {
     g.endFill();
     g.y -= 32;
     g.x -= 16;
+    g.blendMode = Alpha;
+    // g.filter
+    g.addShader(visibleShader);
   }
 }

@@ -25,11 +25,15 @@ class VisibilityShader2D extends hxsl.Shader {
 
     function fragment() {
       var texColor = tex.get(input.uv);
-      if (texColor.r < visiblePerc) {
-        pixelColor.a = 0;
-      } else {
-        pixelColor = pixelColor;
+      // if (texColor.b > visiblePerc) {
+      if (pixelColor.a > 0) {
+        pixelColor.a = visiblePerc;
       }
+      // } else {
+      // var cl = input.uv.x;
+      // pixelColor.rgb = vec3(cl);
+      // pixelColor = pixelColor;
+      // }
     }
   }
 

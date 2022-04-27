@@ -1,3 +1,5 @@
+import shaders.VisibilityFilter;
+import h2d.col.Point;
 import en.collectibles.BaseEgg;
 import en.collectibles.BlueEgg;
 import scn.GameOver;
@@ -162,23 +164,28 @@ class Level extends dn.Process {
    * @param cx 
    * @param cy 
    */
-  public function getDetectionLevel(cx:Int, cy:Int) {
+  public function getDetectionLevel(cx:Int, cy:Int, absPos:Point) {
     var detectionLevels = eggs.filter((lEgg) -> lEgg.isAlive()).map((egg) -> {
+      var eggAbsPos = egg.spr.localToGlobal();
       {
+        pos: new Vector(egg.cx, egg.cy),
         detectionLevel: getEggDetectionLevel(cx, cy, egg),
         dir: new Vector(cx - egg.cx, cy - egg.cy).normalized(),
-        ang: M.angTo(cx, cy, egg.cx, egg.cy)
+        ang: M.angTo(absPos.x, absPos.y, eggAbsPos.x, eggAbsPos.y)
       }
     });
     detectionLevels.sort((detectionOne, detectionTwo) -> {
-      return detectionOne.detectionLevel - detectionTwo.detectionLevel;
+      return detectionTwo.detectionLevel - detectionOne.detectionLevel;
     });
+
     return detectionLevels.first();
   }
 
-  public function getEggDetectionLevel(cx:Int, cy:Int, egg:BaseEgg) {
+  public function getEggDetectionLevel(cx:Float, cy:Float, egg:BaseEgg) {
+    var eggAbsPos = egg.spr.localToGlobal();
     var dist = M.dist(cx, cy, egg.cx, egg.cy);
-    return switch (dist) {
+
+    var level = switch (dist) {
       case d if (d <= 2):
         DetectionLevel.SuperHot;
 
@@ -197,6 +204,11 @@ class Level extends dn.Process {
       case _:
         DetectionLevel.IceCold;
     }
+    egg.visibleShader.visiblePerc = level / SuperHot;
+    // var filter:VisibilityFilter = cast egg.spr.filter;
+    // filter.setVisiblePerc(level / SuperHot);
+
+    return level;
   }
 
   override function update() {

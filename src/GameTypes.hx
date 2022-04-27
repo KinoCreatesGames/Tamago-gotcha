@@ -63,30 +63,30 @@ enum abstract DetectionLevel(Int) from Int to Int {
   /**
    * 90 - 100 - 2 tiles away
    */
-  var SuperHot = 6;
+  var SuperHot = 100;
 
   /**
    * 70-90 - 5 tiles away
    */
-  var Hot = 5;
+  var Hot = 50;
 
   /**
    * 50 - 70 - 10 tiles away
    */
-  var Warmer = 4;
+  var Warmer = 30;
 
   /**
    * 40 - 50 - 15 tiles away
    */
-  var Warm = 3;
+  var Warm = 20;
 
   /**
    * 20 - 40 - 20 tiles away
    */
-  var Cold = 2;
+  var Cold = 10;
 
   /**
    * 0 - 20 - 25 tiles away
    */
-  var IceCold = 1;
+  var IceCold = 5;
 }

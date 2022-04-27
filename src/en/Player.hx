@@ -1,5 +1,6 @@
 package en;
 
+import h2d.col.Point;
 import en.collectibles.BucketKnightEgg;
 import en.collectibles.Ropelli802Egg;
 import en.collectibles.SleetherEgg;
@@ -65,6 +66,8 @@ class Player extends BaseEnt {
     eggIndicator.beginTileFill(tile);
     eggIndicator.drawRect(0, 0, Const.GRID, Const.GRID);
     eggIndicator.endFill();
+    eggIndicator.x = -16;
+    eggIndicator.y = -32;
   }
 
   override function onPreStepX() {
@@ -104,10 +107,27 @@ class Player extends BaseEnt {
 
   override function update() {
     super.update();
+    updateIndicator();
     updateInvincibility();
     handleMovement();
     updateCollisions();
-    updateDetection();
+  }
+
+  public function updateIndicator() {
+    var absPos = spr.absPos();
+    var eggDetection = level.getDetectionLevel(cx, cy, absPos);
+    var additionalRad = M.toRad(90);
+    var radius = 30;
+    var startPoint = new Point(1, 0);
+
+    if (eggDetection != null) {
+      var eggAng = eggDetection.ang;
+      var finalAng = eggAng + additionalRad;
+      startPoint.rotate(eggAng);
+
+      eggIndicator.x = -16 + (startPoint.x * radius);
+      eggIndicator.y = -20 + (startPoint.y * radius);
+    }
   }
 
   /**
@@ -201,19 +221,6 @@ class Player extends BaseEnt {
           }
         case _:
       }
-    }
-  }
-
-  /**
-   * Updates the detection area
-   * for the egg over time.
-   */
-  public function updateDetection() {
-    var detection = level.getDetectionLevel(cx, cy);
-    if (detection != null) {
-      detectionLevel = detection.detectionLevel;
-      detectionDir = detection.dir;
-      detectionAngle = detection.ang;
     }
   }
 
