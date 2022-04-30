@@ -1,3 +1,4 @@
+import scn.Win;
 import shaders.VisibilityFilter;
 import h2d.col.Point;
 import en.collectibles.BaseEgg;
@@ -30,13 +31,13 @@ class Level extends dn.Process {
   public var cWid(get, never):Int;
 
   inline function get_cWid()
-    return 16;
+    return 32;
 
   /** Level grid-based height **/
   public var cHei(get, never):Int;
 
   inline function get_cHei()
-    return 16;
+    return 32;
 
   /** Level pixel width**/
   public var pxWid(get, never):Int;
@@ -103,6 +104,7 @@ class Level extends dn.Process {
   public function createEntities() {
     for (pl in data.l_Entities.all_Player) {
       player = new Player(pl.cx, pl.cy);
+      // game.camera.clampToLevelBounds = false;
       game.camera.trackEntity(player, true);
     }
 
@@ -164,6 +166,8 @@ class Level extends dn.Process {
     return null;
   }
 
+  // Egg Detection Code
+
   /**
    * Returns the detection level and the direction
    * to detect in within the game.
@@ -210,6 +214,7 @@ class Level extends dn.Process {
       case _:
         DetectionLevel.IceCold;
     }
+    // Handle Egg Shader Update
     egg.visibleShader.visiblePerc = level / SuperHot;
     // var filter:VisibilityFilter = cast egg.spr.filter;
     // filter.setVisiblePerc(level / SuperHot);
@@ -217,11 +222,25 @@ class Level extends dn.Process {
     return level;
   }
 
+  // End Egg Detection Code
   override function update() {
     super.update();
     if (player != null) {
-      handlePause();
+      handleWin();
       handleGameOver();
+    }
+  }
+
+  public function handleWin() {
+    var win = true;
+    for (egg in eggs) {
+      if (egg.isAlive()) {
+        // Do Nothing
+        win = false;
+      }
+    }
+    if (win) {
+      new Win();
     }
   }
 

@@ -1,12 +1,12 @@
 package en;
 
+import GameTypes.DetectionLevel;
+import shaders.DistanceToColor2D;
 import h2d.col.Point;
 import en.collectibles.BucketKnightEgg;
 import en.collectibles.Ropelli802Egg;
 import en.collectibles.SleetherEgg;
 import en.collectibles.OinksterEgg;
-import en.collectibles.Egg;
-import en.collectibles.BlueEgg;
 import h3d.Vector;
 import dn.legacy.Controller.ControllerAccess;
 
@@ -66,6 +66,7 @@ class Player extends BaseEnt {
     spr.anim.registerStateAnim('left', 3, () -> {
       return dx < 0;
     });
+    spr.setCenterRatio();
 
     setupIndicator();
   }
@@ -78,6 +79,7 @@ class Player extends BaseEnt {
     eggIndicator.endFill();
     eggIndicator.x = -16;
     eggIndicator.y = -32;
+    eggIndicator.addShader(new DistanceToColor2D());
   }
 
   override function onPreStepX() {
@@ -101,16 +103,18 @@ class Player extends BaseEnt {
   override function onPreStepY() {
     super.onPreStepY();
 
-    if (level.hasAnyCollision(cx, cy)
-      && yr >= 0.5
-      || level.hasAnyCollision(cx + M.round(xr), cy)
-      && yr >= 0.5) {
+    if (level.hasAnyCollision(cx, cy) && yr >= 0.5) {
       // Handle squash and stretch for entities in the game
       if (level.hasAnyCollision(cx, cy + M.round(yr + 0.3))) {
         // setSquashY(0.6);
         dy = 0;
       }
       yr = 0.5;
+      dy = 0;
+    }
+
+    if (level.hasAnyCollision(cx, cy - 1) && yr < 0.5) {
+      yr = 0.4;
       dy = 0;
     }
   }
@@ -137,6 +141,8 @@ class Player extends BaseEnt {
 
       eggIndicator.x = -16 + (startPoint.x * radius);
       eggIndicator.y = -20 + (startPoint.y * radius);
+      eggIndicator.getShader(DistanceToColor2D)
+        .distancePerc = eggDetection.detectionLevel / DetectionLevel.SuperHot;
     }
   }
 
@@ -208,31 +214,45 @@ class Player extends BaseEnt {
     var egg = level.getEgg(cx, cy);
     if (egg != null) {
       var eggType = Type.getClass(egg);
-      if (xr > .5 && xr < .7) {
+      if (xr > .3 && xr < .9) {
         switch (eggType) {
           case OinksterEgg:
             // Handle Oinkster Egg
+            Assets.collectSnd.play();
             level.score += 1000;
+            this.eggCount++;
+            egg.destroy();
           case BucketKnightEgg:
             // Handle BucketKnight Egg
+            Assets.collectSnd.play();
             level.score += 1000;
+            this.eggCount++;
+            egg.destroy();
           case Ropelli802Egg:
             // Handle Ropelli802 Egg
+            Assets.collectSnd.play();
             level.score += 1000;
+            this.eggCount++;
+            egg.destroy();
           case SleetherEgg:
             // SleetherEgg
+            Assets.collectSnd.play();
             level.score += 1000;
+            this.eggCount++;
+            egg.destroy();
           case en.collectibles.Egg:
             Assets.collectSnd.play();
+            this.eggCount++;
             egg.destroy();
             level.score += 100;
-
           case en.collectibles.BlueEgg:
             Assets.collectSnd.play();
+            this.eggCount++;
             egg.destroy();
             level.score += 200;
           case _:
         }
+        setSquashY(0.6);
       }
       hud.invalidate();
     }

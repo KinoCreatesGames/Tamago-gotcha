@@ -7,33 +7,37 @@ import hxsl.Types.Sampler2D;
  * of the sprite using the distance from the current position
  * to the  element.
  */
-class VisibilityShader2D extends hxsl.Shader {
+class DistanceToColor2D extends hxsl.Shader {
   static var SRC = {
     @:import h3d.shader.Base2d; // Necessary for 2D Shaders
 
     /**
-     * The visibility percentage for the 
-     * sprite within the game.
+     * The distance percentage for the 
+     * sprite within the game from target..
      */
-    @param var visiblePerc:Float;
+    @param var distancePerc:Float;
 
     /**
      * The texture used to sample from. 
      * It determines how the alpha will be calculated.
      */
-    @param var tex:Sampler2D;
-
     function fragment() {
-      var texColor = tex.get(input.uv);
       // if (texColor.b > visiblePerc) {
       if (pixelColor.a > 0) {
-        pixelColor.a = visiblePerc;
+        pixelColor.b = 1 - distancePerc;
+        // pixelColor.r = distancePerc;
+        pixelColor.g = 1 - distancePerc;
       }
+      // } else {
+      // var cl = input.uv.x;
+      // pixelColor.rgb = vec3(cl);
+      // pixelColor = pixelColor;
+      // }
     }
   }
 
-  public function new(visiblePerc:Float = 0) {
+  public function new(distancePerc:Float = 0) {
     super();
-    this.visiblePerc = visiblePerc;
+    this.distancePerc = distancePerc;
   }
 }
