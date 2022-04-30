@@ -51,13 +51,22 @@ class Player extends BaseEnt {
   }
 
   public function setupGraphic() {
-    var g = this.spr.createGraphics();
-    var size = 16;
-    g.beginFill(0xffff00);
-    g.drawRect(0, 0, size, size);
-    g.endFill();
-    g.y -= 8;
-    g.x -= 8;
+    var hero = hxd.Res.img.player_character_flat.toAseprite()
+      .aseToSlib(Const.FPS);
+    spr.set(hero);
+    spr.anim.registerStateAnim('forward', 0, () -> {
+      return dx == 0 || dy > 0;
+    });
+    spr.anim.registerStateAnim('right', 1, () -> {
+      return dx > 0;
+    });
+    spr.anim.registerStateAnim('backward', 2, () -> {
+      return dy < 0;
+    });
+    spr.anim.registerStateAnim('left', 3, () -> {
+      return dx < 0;
+    });
+
     setupIndicator();
   }
 
