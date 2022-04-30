@@ -10,8 +10,10 @@ class Assets {
   public static var fontLarge:h2d.Font;
   public static var tiles:SpriteLib;
   public static var gameTiles:SpriteLib;
+  public static var eggTiles:SpriteLib;
 
   public static var gameTilesDict = Aseprite.getDict(hxd.Res.img.tiles);
+  public static var eggTilesDict = Aseprite.getDict(hxd.Res.img.BabyEggs);
   // Sound Collection
   public static var collectSnd:Sound;
   public static var switchOnSnd:Sound;
@@ -40,6 +42,7 @@ class Assets {
     // uiEl = Aseprite.convertToSLib(Const.FPS, hxd.Res.img.UIFX.toAseprite());
     gameTiles = Aseprite.convertToSLib(Const.FPS,
       hxd.Res.img.tiles.toAseprite());
+    eggTiles = hxd.Res.img.BabyEggs.toAseprite().aseToSlib(Const.FPS);
     // Sounds Section
     collectSnd = hxd.Res.sound.collect_collectible;
     damageSnd = hxd.Res.sound.hit_sfx;

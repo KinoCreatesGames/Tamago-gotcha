@@ -6,6 +6,15 @@ class Ropelli802Egg extends BaseEgg {
   }
 
   override function setupGraphic() {
-    super.setupGraphic();
+    var g = this.spr.createGraphics();
+    var size = Const.GRID;
+    var tile = Assets.eggTiles.getTile(Assets.eggTilesDict.Ropelli);
+    g.beginTileFill(tile);
+    g.drawRect(0, 0, size, size);
+    g.endFill();
+    g.y -= 32;
+    g.x -= 16;
+
+    g.addShader(visibleShader);
   }
 }

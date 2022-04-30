@@ -63,6 +63,12 @@ class Level extends dn.Process {
   public var enemies:Group<Enemy>;
   public var eggs:Group<BaseEgg>;
 
+  /**
+   * The Score on the level for collecting 
+   * eggs.
+   */
+  public var score:Int;
+
   public function new(level:LDTkProj_Level) {
     super(Game.ME);
     this.data = level;

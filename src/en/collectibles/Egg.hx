@@ -17,5 +17,7 @@ class Egg extends BaseEgg {
     g.endFill();
     g.y -= 32;
     g.x -= 16;
+
+    g.addShader(visibleShader);
   }
 }

@@ -26,6 +26,7 @@ class Player extends BaseEnt {
   public var detectionAngle:Float;
 
   public var eggIndicator:h2d.Graphics;
+  public var eggCount:Int;
 
   public inline function get_isInvincible() {
     return cd.has('invincibleTime');
@@ -62,7 +63,7 @@ class Player extends BaseEnt {
 
   public function setupIndicator() {
     eggIndicator = spr.createGraphics();
-    var tile = hxd.Res.img.Egg_indicator.toTile();
+    var tile = hxd.Res.img.egg_indicator_two.toTile();
     eggIndicator.beginTileFill(tile);
     eggIndicator.drawRect(0, 0, Const.GRID, Const.GRID);
     eggIndicator.endFill();
@@ -198,29 +199,33 @@ class Player extends BaseEnt {
     var egg = level.getEgg(cx, cy);
     if (egg != null) {
       var eggType = Type.getClass(egg);
-      switch (eggType) {
-        case OinksterEgg:
-        // Handle Oinkster Egg
-        case BucketKnightEgg:
-        // Handle BucketKnight Egg
-        case Ropelli802Egg:
-        // Handle Ropelli802 Egg
-        case SleetherEgg:
-        // SleetherEgg
-        case en.collectibles.Egg:
-          if (xr > .5 && xr < .7) {
-            trace(xr);
+      if (xr > .5 && xr < .7) {
+        switch (eggType) {
+          case OinksterEgg:
+            // Handle Oinkster Egg
+            level.score += 1000;
+          case BucketKnightEgg:
+            // Handle BucketKnight Egg
+            level.score += 1000;
+          case Ropelli802Egg:
+            // Handle Ropelli802 Egg
+            level.score += 1000;
+          case SleetherEgg:
+            // SleetherEgg
+            level.score += 1000;
+          case en.collectibles.Egg:
             Assets.collectSnd.play();
             egg.destroy();
-          }
-        case en.collectibles.BlueEgg:
-          if (xr > .5 && xr < .7) {
-            trace(xr);
+            level.score += 100;
+
+          case en.collectibles.BlueEgg:
             Assets.collectSnd.play();
             egg.destroy();
-          }
-        case _:
+            level.score += 200;
+          case _:
+        }
       }
+      hud.invalidate();
     }
   }
 
