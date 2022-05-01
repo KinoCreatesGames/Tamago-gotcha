@@ -1,4 +1,5 @@
 .tmp
 redist
 bin
+*.wav
 .vscode/settings.json

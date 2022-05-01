@@ -16,6 +16,10 @@ Egg Visibility: VisibilityShader2D.hx
 ## About
 
 
+## Credits
+- Design - Kino R
+- Music JDSherbert
+
 ## Deepnight Base Structure Used for the game
 
 Base structure for my games, using **Heaps** framework (https://heaps.io) and **Haxe** language (https://haxe.org).

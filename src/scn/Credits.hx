@@ -29,7 +29,7 @@ class Credits extends dn.Process {
     root.under(mask);
     ca = Main.ME.controller.createAccess('credits');
     // Play music
-    // bgm = hxd.Res.music.happy_end.play(true);
+    // bgm = hxd.Res.music.JDSherbert__Disney_Films.play(true);
 
     setupCredits();
     dn.Process.resizeAll();

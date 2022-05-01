@@ -1,3 +1,4 @@
+import hxd.snd.Channel;
 import scn.Win;
 import shaders.VisibilityFilter;
 import h2d.col.Point;
@@ -66,6 +67,8 @@ class Level extends dn.Process {
   public var enemies:Group<Enemy>;
   public var eggs:Group<BaseEgg>;
 
+  public var bgm:Channel;
+
   /**
    * The Score on the level for collecting 
    * eggs.
@@ -79,6 +82,8 @@ class Level extends dn.Process {
     super(Game.ME);
 
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
+    hxd.Res.music.JDSherbert__Disney_Films.stop();
+    bgm = hxd.Res.music.JDSherbert__Disney_Films.play(true);
     setup();
   }
 
@@ -231,6 +236,12 @@ class Level extends dn.Process {
   override function update() {
     super.update();
     if (player != null) {
+      #if debug
+      if (game.ca.isKeyboardPressed(K.ESCAPE)) {
+        this.pause();
+        new Win();
+      }
+      #end
       handleWin();
       handleGameOver();
     }
@@ -291,6 +302,10 @@ class Level extends dn.Process {
 
   override function onDispose() {
     super.onDispose();
+    if (bgm != null) {
+      bgm.stop();
+      bgm = null;
+    }
     // Entity Clean Up on Level dispose
     // this.player = null;
 
