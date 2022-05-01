@@ -55,16 +55,16 @@ class Win extends dn.Process {
 
   public function setupText() {
     var title = new h2d.Text(Assets.fontLarge, root);
-    title.text = Lang.t._('You Win');
+    title.text = Lang.t._('You Win! Thanks For Playing');
     title.center();
     titleText = title;
 
     // Configure Buttons on the game over scene
-    // setupOptions();
+    setupOptions();
   }
 
   inline function setupOptions() {
-    var options = [Lang.t._('Exit')];
+    var options = [Lang.t._('Play Again')];
     for (index in 0...options.length) {
       var text = options[index];
       var optInt = setupOption(text);

@@ -86,14 +86,14 @@ class Player extends BaseEnt {
     super.onPreStepX();
 
     if (level.hasAnyCollision(cx + 1,
-      cy - 1) && xr >= 0.7) // Handle squash and stretch for entities in the game
+      cy) && xr >= 0.7) // Handle squash and stretch for entities in the game
     {
       xr = 0.5;
       dx = 0;
       setSquashY(0.6);
     }
 
-    if (level.hasAnyCollision(cx - 1, cy - 1) && xr <= 0.3) {
+    if (level.hasAnyCollision(cx - 1, cy) && xr <= 0.3) {
       xr = 0.3;
       dx = 0;
       setSquashY(0.6);
@@ -115,6 +115,11 @@ class Player extends BaseEnt {
 
     if (level.hasAnyCollision(cx, cy - 1) && yr < 0.5) {
       yr = 0.4;
+      dy = 0;
+    }
+
+    if (level.hasAnyCollision(cx, cy + 1) && yr > 0.5) {
+      yr = .5;
       dy = 0;
     }
   }

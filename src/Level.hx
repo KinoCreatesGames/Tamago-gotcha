@@ -31,13 +31,13 @@ class Level extends dn.Process {
   public var cWid(get, never):Int;
 
   inline function get_cWid()
-    return 32;
+    return 45;
 
   /** Level grid-based height **/
   public var cHei(get, never):Int;
 
   inline function get_cHei()
-    return 32;
+    return 37;
 
   /** Level pixel width**/
   public var pxWid(get, never):Int;
@@ -57,6 +57,8 @@ class Level extends dn.Process {
   public var scnGameOver:GameOver;
 
   public var data:LDTkProj_Level;
+  public var colWidth:Int = 1;
+  public var colHeight:Int = 1;
 
   // Groups & Player
   public var player:Player;
@@ -71,8 +73,11 @@ class Level extends dn.Process {
   public var score:Int;
 
   public function new(level:LDTkProj_Level) {
-    super(Game.ME);
     this.data = level;
+    this.colWidth = Std.int(data.pxWid / Const.GRID);
+    this.colHeight = Std.int(data.pxHei / Const.GRID);
+    super(Game.ME);
+
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     setup();
   }
@@ -240,6 +245,7 @@ class Level extends dn.Process {
       }
     }
     if (win) {
+      this.pause();
       new Win();
     }
   }
@@ -286,10 +292,19 @@ class Level extends dn.Process {
   override function onDispose() {
     super.onDispose();
     // Entity Clean Up on Level dispose
-    this.player = null;
+    // this.player = null;
 
     for (collectible in collectibles) {
       collectible.destroy();
     }
+
+    for (egg in eggs) {
+      egg.destroy();
+    }
+
+    for (enemy in enemies) {
+      enemy.destroy();
+    }
+    this.player.dispose();
   }
 }
